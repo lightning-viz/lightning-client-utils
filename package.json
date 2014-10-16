@@ -1,0 +1,20 @@
+{
+  "name": "lightning-client-utils",
+  "version": "0.1.0",
+  "description": "utilities for lightning visualizations to be used in the browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "lightning",
+    "dataviz",
+    "browser",
+    "lightning-viz"
+  ],
+  "author": "Matthew Conlen",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
