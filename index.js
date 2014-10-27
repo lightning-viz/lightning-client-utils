@@ -1,5 +1,7 @@
 
 var _ = require('lodash');
+var request = require('superagent');
+var r;
 
 var utils = {
 
@@ -34,6 +36,50 @@ var utils = {
         }
 
         return retColors;
+    },
+
+
+    isEditorOrPreview: function() {
+        var url = document.URL;
+        return /https?:\/\/[^\/]+\/visualization-types\/*/.test(url);
+    },
+
+
+    fetchData: function(viz, keys, cb) {
+
+
+        if(this.isEditorOrPreview()) {
+
+            setTimeout(function() {
+                var data = $('#data-editor').next('.CodeMirror').find('.CodeMirror-code span')[0].innerHTML;
+                var fetchedData = JSON.parse(data);
+
+                _.each(keys, function(key) {
+                    fetchedData = fetchedData[key];
+                });
+
+                cb(null, fetchedData);
+
+            }, 0);
+
+
+        } else {
+
+            var url = viz.$el.parent().find('.permalink').find('a').attr('href');
+
+            if(r) {
+                r.abort();
+            }
+
+            r = request.get(url + '/data/' + keys.join('/'), function(err, res) {
+
+                if(err) {
+                    return cb(err)
+                }
+
+                cb(null, (res.body || {}).data);
+            });
+        }
     }
 
 
