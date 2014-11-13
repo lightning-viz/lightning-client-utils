@@ -15,6 +15,7 @@
   "author": "Matthew Conlen",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "superagent": "^0.21.0"
   }
 }
