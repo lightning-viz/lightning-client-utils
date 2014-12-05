@@ -1,5 +1,7 @@
 
 var _ = require('lodash');
+var request = require('superagent');
+var r;
 
 var utils = {
 
@@ -26,7 +28,7 @@ var utils = {
     },
 
     getColors: function(n) {
-        var colors = ['#A38EF3', '#7AB2EA', '#57C6B9', '#E96684'];
+        var colors = ['#A38EF3', '#7AB2EA', '#57C6B9', '#E96684', '#F0E86B', '#626c7c', '#F9A75F', '#F1B6BD', '#8C564B', '#006400'];
 
         var retColors = [];
         for(var i = 0; i<n; i++) {
@@ -35,7 +37,6 @@ var utils = {
 
         return retColors;
     },
-
 
     trackTransforms: function(ctx){
 
@@ -150,6 +151,51 @@ var utils = {
         };
         canvas.addEventListener('DOMMouseScroll',handleScroll,false);
         canvas.addEventListener('mousewheel',handleScroll,false);
+
+    },
+
+
+    isEditorOrPreview: function() {
+        var url = document.URL;
+        return /https?:\/\/[^\/]+\/visualization-types\/*/.test(url);
+    },
+
+
+    fetchData: function(viz, keys, cb) {
+
+
+        if(this.isEditorOrPreview()) {
+
+            setTimeout(function() {
+                var data = $('#data-editor').next('.CodeMirror').find('.CodeMirror-code span')[0].innerHTML;
+                var fetchedData = JSON.parse(data);
+
+                _.each(keys, function(key) {
+                    fetchedData = fetchedData[key];
+                });
+
+                cb(null, fetchedData);
+
+            }, 0);
+
+
+        } else {
+
+            var url = viz.$el.parent().find('.permalink').find('a').attr('href');
+
+            if(r) {
+                r.abort();
+            }
+
+            r = request.get(url + '/data/' + keys.join('/'), function(err, res) {
+
+                if(err) {
+                    return cb(err)
+                }
+
+                cb(null, (res.body || {}).data);
+            });
+        }
     }
 
 
