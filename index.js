@@ -160,6 +160,11 @@ var utils = {
         return /https?:\/\/[^\/]+\/visualization-types\/*/.test(url);
     },
 
+    getUrl: function(viz) {
+        console.log(viz);
+        return viz.$el.parent().find('.permalink').find('a').attr('href');
+    },
+
 
     fetchData: function(viz, keys, cb) {
 
@@ -181,7 +186,7 @@ var utils = {
 
         } else {
 
-            var url = viz.$el.parent().find('.permalink').find('a').attr('href');
+            var url = this.getUrl(viz);
 
             if(r) {
                 r.abort();
@@ -196,8 +201,51 @@ var utils = {
                 cb(null, (res.body || {}).data);
             });
         }
+    },
+
+    getSettings: function(viz, cb) {
+
+        if(this.isEditorOrPreview()) {
+            setTimeout(function() {
+                cb(null, {});
+            }, 0);
+
+            return;
+        }
+
+        var url = this.getUrl(viz);
+
+        r = request.get(url + '/settings/', function(err, res) {
+
+            if(err) {
+                return cb(err)
+            }
+
+            cb(null, (res.body || {}).settings);
+        });
     }
 
+    updateSettings: function(viz, settings, cb) {
+
+        if(this.isEditorOrPreview()) {
+            setTimeout(function() {
+                cb(null, settings);
+            }, 0);
+
+            return;
+        }
+
+        var url = this.getUrl(viz);
+
+        r = request.post(url + '/settings/', settings, function(err, res) {
+
+            if(err) {
+                return cb(err)
+            }
+
+            cb(null, (res.body || {}).settings);
+        });
+    }
 
 };
 
