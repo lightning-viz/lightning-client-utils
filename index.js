@@ -223,7 +223,7 @@ var utils = {
 
             cb(null, (res.body || {}).settings);
         });
-    }
+    },
 
     updateSettings: function(viz, settings, cb) {
 
