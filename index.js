@@ -51,7 +51,7 @@ var utils = {
             var mn = d3.min(label, function(d) {return d; });
             var mx = d3.max(label, function(d) {return d; });
             var n = mx - mn + 1
-            var colors = getColors(n)
+            var colors = this.getColors(n)
 
             // get an array of d3 colors
             retColor = label.map(function(d) {return d3.rgb(colors[d - mn])});
@@ -69,19 +69,6 @@ var utils = {
         }
 
         return retColor
-    },
-
-    getPropertyFromData: function(data, name) {
-
-        // retrieve property with the given name from a data object
-        // if non existing, return empty array
-
-        if (data.hasOwnProperty(name)) {
-            ret = data[name]
-        } else {
-            ret = []
-        }
-        return ret
     },
 
     trackTransforms: function(ctx){
