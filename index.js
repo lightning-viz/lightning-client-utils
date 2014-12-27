@@ -71,7 +71,7 @@ var utils = {
         return retColor
     },
 
-    var getPropertyFromData = function(data, name) {
+    getPropertyFromData: function(data, name) {
 
         // retrieve property with the given name from a data object
         // if non existing, return empty array
