@@ -1,6 +1,7 @@
 
 var _ = require('lodash');
 var request = require('superagent');
+var d3 = require('d3');
 var r;
 
 var utils = {
