@@ -135,6 +135,7 @@ var utils = {
         var pt  = svg.createSVGPoint();
         ctx.transformedPoint = function(x,y) {
             pt.x=x; pt.y=y;
+            console.log(xform)
             return pt.matrixTransform(xform.inverse());
         };
     },
@@ -195,7 +196,7 @@ var utils = {
 
     getUrl: function(viz) {
         console.log(viz);
-        return viz.$el.parent().find('.permalink').find('a').attr('href');
+        return viz.$el.parent().find('.permalink').find('a[data-attribute="permalink"]').attr('href');
     },
 
 
