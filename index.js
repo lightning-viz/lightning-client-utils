@@ -135,7 +135,6 @@ var utils = {
         var pt  = svg.createSVGPoint();
         ctx.transformedPoint = function(x,y) {
             pt.x=x; pt.y=y;
-            console.log(xform)
             return pt.matrixTransform(xform.inverse());
         };
     },
@@ -195,13 +194,23 @@ var utils = {
     },
 
     getUrl: function(viz) {
-        console.log(viz);
-        return viz.$el.parent().find('.permalink').find('a[data-attribute="permalink"]').attr('href');
+
+        var vid = viz.$el.parent().data('model-id');
+        var host = '/';
+
+        if(window.lightning && window.lightning.host) {
+            host = window.lightning.host;
+        }
+
+        return host + 'visualizations/' + vid;
     },
 
 
     fetchData: function(viz, keys, cb) {
 
+        if(!viz.$el) {
+            console.warn('Must set .$el property on your visualization');
+        }
 
         if(this.isEditorOrPreview()) {
 
@@ -226,7 +235,7 @@ var utils = {
                 r.abort();
             }
 
-            r = request.get(url + '/data/' + keys.join('/'), function(err, res) {
+            r = request.get(url + '/data/' + keys.join('/') + '/', function(err, res) {
 
                 if(err) {
                     return cb(err)
@@ -257,6 +266,17 @@ var utils = {
 
             cb(null, (res.body || {}).settings);
         });
+    },
+
+    getUniqueId: function() {
+        var s4 = function() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                       .toString(16)
+                       .substring(1);
+        }
+
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
     },
 
     updateSettings: function(viz, settings, cb) {
