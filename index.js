@@ -195,7 +195,7 @@ var utils = {
 
     getUrl: function(viz) {
 
-        var vid = viz.$el.parent().data('model-id');
+        var vid = viz.$el.closest('[data-model=visualization]').data('model-id');
         var host = '/';
 
         if(window.lightning && window.lightning.host) {
