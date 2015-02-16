@@ -18,5 +18,14 @@
     "lodash": "^2.4.1",
     "superagent": "^0.21.0",
     "d3": "~3.4.9"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightning-viz/lightning-client-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lightning-viz/lightning-client-utils/issues"
+  },
+  "homepage": "https://github.com/lightning-viz/lightning-client-utils"
 }
