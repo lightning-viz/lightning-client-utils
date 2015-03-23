@@ -24,6 +24,14 @@ var utils = {
         return image + '_small';
     },
 
+    cleanImageURL: function(url) {
+        if(url.indexOf('http') > -1) {
+            return url;
+        }
+
+        return (window.lightning && window.lightning.host) ? window.lightning.host + url : url;
+    },
+
     mapRange: function(value, istart, istop, ostart, ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     },
