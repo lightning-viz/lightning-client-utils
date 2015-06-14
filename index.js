@@ -201,9 +201,17 @@ var utils = {
         return /https?:\/\/[^\/]+\/visualization-types\/*/.test(url);
     },
 
+    getId: function(viz) {
+        var $el = viz.$el;
+        if(!viz.$el) {
+            $el = $(viz.selection);
+        }
+        return $el.closest('[data-model=visualization]').data('model-id');
+    },
+
     getUrl: function(viz) {
 
-        var vid = viz.$el.closest('[data-model=visualization]').data('model-id');
+        var vid = this.getId(viz);
         var host = '/';
 
         if(window.lightning && window.lightning.host) {
@@ -307,6 +315,23 @@ var utils = {
 
             cb(null, (res.body || {}).settings);
         });
+    },
+
+    getCommForViz: function(viz) {
+        var m = (window.lightning || {}).comm_map;
+        if(m) {
+            return m[this.getId(viz)];
+        }
+    },
+
+    sendCommMessage: function(viz, type, data) {
+        var comm = this.getCommForViz(viz);
+        if(comm) {
+            comm.send(JSON.stringify({
+                type: type,
+                data: data
+            }));
+        }
     }
 
 };
