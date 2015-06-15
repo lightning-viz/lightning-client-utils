@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var request = require('superagent');
 var d3 = require('d3');
+var Color = require('color');
 var r;
 
 var utils = {
@@ -78,6 +79,12 @@ var utils = {
 
         return retColor
     },
+
+    buildRGBA: function(base, opacity) {
+        var color = Color(base);
+        color.alpha(opacity);
+        return color.rgbString();
+    };
 
     trackTransforms: function(ctx){
 
