@@ -37,7 +37,7 @@ var utils = {
     },
 
     getColors: function(n) {
-        var colors = ['#A38EF3', '#7AB2EA', '#57C6B9', '#E96684', '#F0E86B', '#626c7c', '#F9A75F', '#F1B6BD', '#8C564B', '#006400'];
+        var colors = ['#A38EF3', '#7ABFEA', '#5BC69F', '#E96B88', '#F0E86B', '#C2B08C', '#F9B070', '#F19A9A', '#97DA90', '#DBB1F2'];
 
         var retColors = [];
         for(var i = 0; i<n; i++) {
