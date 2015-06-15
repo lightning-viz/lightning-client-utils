@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var request = require('superagent');
 var d3 = require('d3');
+var colorbrewer = require('colorbrewer')
 var Color = require('color');
 var r;
 
@@ -17,8 +18,15 @@ var utils = {
         var img=new Image();
         img.src=url;
     },
+
     randomColor: function() {
         return '#'+Math.floor(Math.random()*16777215).toString(16);
+    },
+
+    linspace: function(a, b, n) {
+      var every = (b-a)/(n-1)
+      var ranged = _.range(a, b, every);
+      return ranged.length == n ? ranged : ranged.concat(b);
     },
 
     getThumbnail: function(image) {
@@ -71,6 +79,30 @@ var utils = {
             color = data.color
             retColor = color.map(function(d) {return d3.rgb(d[0], d[1], d[2])})
 
+        } else if (data.hasOwnProperty('value')) {
+
+            value = data.value
+
+            // get d3 colors from a linear scale
+            var colormap = data.colormap ? data.colormap : "Purples"
+
+            var ncolor = 9
+            if (colormap == "Lightning") {
+                var color = ['#E96B88', '#F19A9A', '#F9B070', '#F0E86B', '#AADA90', '#5BC69F', '#7ABFEA', '#DBB1F2', '#A38EF3']
+            } else {
+                var color = colorbrewer[colormap][ncolor]
+            }
+            
+            // get min and max of value data
+            var vmin = d3.min(value)
+            var vmax = d3.max(value)            
+
+            // set up scales
+            var domain = this.linspace(vmin, vmax, ncolor)
+            var scale = d3.scale.linear().domain(domain).range(color);
+
+            retColor = value.map(function(d) {return d3.rgb(scale(d))})
+
         } else {
 
             // otherwise return empty
@@ -84,7 +116,7 @@ var utils = {
         var color = Color(base);
         color.alpha(opacity);
         return color.rgbString();
-    };
+    }, 
 
     trackTransforms: function(ctx){
 
