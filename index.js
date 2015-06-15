@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var request = require('superagent');
 var d3 = require('d3');
+var Color = require('color');
 var r;
 
 var utils = {
@@ -37,7 +38,7 @@ var utils = {
     },
 
     getColors: function(n) {
-        var colors = ['#A38EF3', '#7ABFEA', '#5BC69F', '#E96B88', '#F0E86B', '#C2B08C', '#F9B070', '#F19A9A', '#97DA90', '#DBB1F2'];
+        var colors = ['#A38EF3', '#7ABFEA', '#5BC69F', '#E96B88', '#F0E86B', '#C2B08C', '#F9B070', '#F19A9A', '#AADA90', '#DBB1F2'];
 
         var retColors = [];
         for(var i = 0; i<n; i++) {
@@ -78,6 +79,12 @@ var utils = {
 
         return retColor
     },
+
+    buildRGBA: function(base, opacity) {
+        var color = Color(base);
+        color.alpha(opacity);
+        return color.rgbString();
+    };
 
     trackTransforms: function(ctx){
 
