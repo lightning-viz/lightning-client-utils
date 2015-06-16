@@ -88,7 +88,7 @@ var utils = {
 
             var ncolor = 9
             if (colormap == "Lightning") {
-                var color = ['#E96B88', '#F19A9A', '#F9B070', '#F0E86B', '#AADA90', '#5BC69F', '#7ABFEA', '#DBB1F2', '#A38EF3']
+                var color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A', '#E96B88']
             } else {
                 var color = colorbrewer[colormap][ncolor]
             }
