@@ -371,6 +371,24 @@ var utils = {
                 data: data
             }));
         }
+    },
+
+    nearestPoint: function(points, target, xscale, yscale) {
+        // find point in points nearest to target
+        // using scales x and y
+        // point must have attrs x, y, and s
+        var i = 0, count = 0;
+        var found, dist, n, p;
+        while (count == 0 & i < points.length) {
+            p = points[i]
+            dist = Math.sqrt(Math.pow(xscale(p.x) - target[0], 2) + Math.pow(yscale(p.y) - target[1], 2))
+            if (dist <= p.s) {
+                found = p
+                count = 1
+            }
+            i++;
+        }
+        return found
     }
 
 };
