@@ -1,6 +1,6 @@
 {
   "name": "lightning-client-utils",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "utilities for lightning visualizations to be used in the browser",
   "main": "index.js",
   "scripts": {
