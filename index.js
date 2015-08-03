@@ -2,7 +2,7 @@
 var _ = require('lodash');
 var request = require('superagent');
 var d3Color = require('d3-color');
-var d3Scale = require('d3-color');
+var d3Scale = require('d3-scale');
 
 var colorbrewer = require('colorbrewer')
 var Color = require('color');
