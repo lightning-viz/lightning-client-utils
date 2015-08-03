@@ -15,11 +15,12 @@
   "author": "Matthew Conlen",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^2.4.1",
-    "superagent": "^0.21.0",
-    "d3": "~3.4.9",
+    "color": "^0.7.3",
     "colorbrewer": "0.0.2",
-    "color": "^0.7.3"
+    "d3-color": "^0.2.4",
+    "d3-scale": "^0.1.1",
+    "lodash": "^2.4.1",
+    "superagent": "^0.21.0"
   },
   "devDependencies": {},
   "repository": {

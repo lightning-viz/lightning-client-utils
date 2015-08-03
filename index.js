@@ -1,7 +1,9 @@
 
 var _ = require('lodash');
 var request = require('superagent');
-var d3 = require('d3');
+var d3Color = require('d3-color');
+var d3Scale = require('d3-color');
+
 var colorbrewer = require('colorbrewer')
 var Color = require('color');
 var r;
@@ -65,19 +67,19 @@ var utils = {
 
             // get bounds and number of labels
             label = data.label
-            var mn = d3.min(label, function(d) {return d; });
-            var mx = d3.max(label, function(d) {return d; });
+            var mn = Math.min.apply(null, label);
+            var mx = Math.max.apply(null, label);
             var n = mx - mn + 1
             var colors = this.getColors(n)
 
             // get an array of d3 colors
-            retColor = label.map(function(d) {return d3.rgb(colors[d - mn])});
+            retColor = label.map(function(d) {return d3Color.rgb(colors[d - mn])});
 
         } else if (data.hasOwnProperty('color')) {
 
             // get an array of d3 colors directly from r,g,b values
             color = data.color
-            retColor = color.map(function(d) {return d3.rgb(d[0], d[1], d[2])})
+            retColor = color.map(function(d) {return d3Color.rgb(d[0], d[1], d[2])})
 
         } else if (data.hasOwnProperty('value')) {
 
@@ -94,14 +96,14 @@ var utils = {
             }
             
             // get min and max of value data
-            var vmin = d3.min(value)
-            var vmax = d3.max(value)            
+            var vmin = Math.min.apply(null, value);
+            var vmax = Math.max.apply(null, value);
 
             // set up scales
             var domain = this.linspace(vmin, vmax, ncolor)
-            var scale = d3.scale.linear().domain(domain).range(color);
+            var scale = d3Scale.linear().domain(domain).range(color);
 
-            retColor = value.map(function(d) {return d3.rgb(scale(d))})
+            retColor = value.map(function(d) {return d3Color.rgb(scale(d))})
 
         } else {
 
