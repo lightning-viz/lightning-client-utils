@@ -1,4 +1,4 @@
-
+'use strict';
 var _ = require('lodash');
 var request = require('superagent');
 var d3Color = require('d3-color');
@@ -26,7 +26,7 @@ var utils = {
     },
 
     linspace: function(a, b, n) {
-      var every = (b-a)/(n-1)
+      var every = (b-a)/(n-1);
       var ranged = _.range(a, b, every);
       return ranged.length == n ? ranged : ranged.concat(b);
     },
@@ -62,37 +62,38 @@ var utils = {
 
         // retrieve an array of colors from 'label' or 'color' fields of object data
         // returns an list of lists in the form [[r,g,b],[r,g,b]...]
+        var retColor, color;
 
-        if(data.hasOwnProperty('label')) {
+        if(data.hasOwnProperty('group')) {
 
             // get bounds and number of labels
-            label = data.label
-            var mn = Math.min.apply(null, label);
-            var mx = Math.max.apply(null, label);
-            var n = mx - mn + 1
-            var colors = this.getColors(n)
+            var group = data.group;
+            var mn = Math.min.apply(null, group);
+            var mx = Math.max.apply(null, group);
+            var n = mx - mn + 1;
+            var colors = this.getColors(n);
 
             // get an array of d3 colors
-            retColor = label.map(function(d) {return d3Color.rgb(colors[d - mn])});
+            retColor = group.map(function(d) { return d3Color.rgb(colors[d - mn]); });
 
         } else if (data.hasOwnProperty('color')) {
 
             // get an array of d3 colors directly from r,g,b values
-            color = data.color
-            retColor = color.map(function(d) {return d3Color.rgb(d[0], d[1], d[2])})
+            color = data.color;
+            retColor = color.map(function(d) {return d3Color.rgb(d[0], d[1], d[2]); });
 
         } else if (data.hasOwnProperty('value')) {
 
-            value = data.value
+            var value = data.value;
 
             // get d3 colors from a linear scale
-            var colormap = data.colormap ? data.colormap : "Purples"
+            var colormap = data.colormap ? data.colormap : 'Purples';
 
-            var ncolor = 9
-            if (colormap == "Lightning") {
-                var color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A', '#E96B88']
+            var ncolor = 9;
+            if (colormap == 'Lightning') {
+                color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A', '#E96B88'];
             } else {
-                var color = colorbrewer[colormap][ncolor]
+                color = colorbrewer[colormap][ncolor];
             }
             
             // get min and max of value data
@@ -100,18 +101,17 @@ var utils = {
             var vmax = Math.max.apply(null, value);
 
             // set up scales
-            var domain = this.linspace(vmin, vmax, ncolor)
+            var domain = this.linspace(vmin, vmax, ncolor);
             var scale = d3Scale.linear().domain(domain).range(color);
 
-            retColor = value.map(function(d) {return d3Color.rgb(scale(d))})
+            retColor = value.map(function(d) { return d3Color.rgb(scale(d)); });
 
         } else {
-
             // otherwise return empty
-            retColor = []
+            retColor = [];
         }
 
-        return retColor
+        return retColor;
     },
 
     buildRGBA: function(base, opacity) {
@@ -295,7 +295,7 @@ var utils = {
             r = request.get(url + '/data/' + keys.join('/') + '/', function(err, res) {
 
                 if(err) {
-                    return cb(err)
+                    return cb(err);
                 }
 
                 cb(null, (res.body || {}).data);
@@ -318,7 +318,7 @@ var utils = {
         r = request.get(url + '/settings/', function(err, res) {
 
             if(err) {
-                return cb(err)
+                return cb(err);
             }
 
             cb(null, (res.body || {}).settings);
@@ -330,7 +330,7 @@ var utils = {
             return Math.floor((1 + Math.random()) * 0x10000)
                        .toString(16)
                        .substring(1);
-        }
+        };
 
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
            s4() + '-' + s4() + s4() + s4();
