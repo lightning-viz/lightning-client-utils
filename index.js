@@ -66,7 +66,7 @@ var utils = {
 
         if(data.hasOwnProperty('group')) {
 
-            // get bounds and number of labels
+            // get bounds and number of group labels
             var group = data.group;
             var mn = Math.min.apply(null, group);
             var mx = Math.max.apply(null, group);
@@ -82,9 +82,9 @@ var utils = {
             color = data.color;
             retColor = color.map(function(d) {return d3Color.rgb(d[0], d[1], d[2]); });
 
-        } else if (data.hasOwnProperty('value')) {
+        } else if (data.hasOwnProperty('values')) {
 
-            var value = data.value;
+            var values = data.values;
 
             // get d3 colors from a linear scale
             var colormap = data.colormap ? data.colormap : 'Purples';
@@ -97,14 +97,14 @@ var utils = {
             }
             
             // get min and max of value data
-            var vmin = Math.min.apply(null, value);
-            var vmax = Math.max.apply(null, value);
+            var vmin = Math.min.apply(null, values);
+            var vmax = Math.max.apply(null, values);
 
             // set up scales
             var domain = this.linspace(vmin, vmax, ncolor);
             var scale = d3Scale.linear().domain(domain).range(color);
 
-            retColor = value.map(function(d) { return d3Color.rgb(scale(d)); });
+            retColor = values.map(function(d) { return d3Color.rgb(scale(d)); });
 
         } else {
             // otherwise return empty
