@@ -243,15 +243,22 @@ var utils = {
     },
 
     getId: function(viz) {
+        /*
+         * TODO - move this logic to the visualization base class
+         *        so we aren't passing around viz objects everywhere
+         */
         var $el = viz.$el;
         if(!viz.$el) {
-            $el = $(viz.selection);
+            $el = $(viz.selector);
         }
         return $el.closest('[data-model=visualization]').data('model-id');
     },
 
     getUrl: function(viz) {
-
+        /*
+         * TODO - move this logic to the visualization base class
+         *        so we aren't passing around viz objects everywhere
+         */
         var vid = this.getId(viz);
         var host = '/';
 
@@ -347,7 +354,6 @@ var utils = {
         }
 
         var url = this.getUrl(viz);
-
         r = request.post(url + '/settings/', settings, function(err, res) {
 
             if(err) {
