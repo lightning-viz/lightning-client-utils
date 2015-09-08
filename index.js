@@ -86,14 +86,19 @@ var utils = {
 
             var values = data.values;
 
-            // get d3 colors from a linear scale
+            // get distinct values
+            var distinct = _.uniq(data.values).length
+            if (distinct > 8) {
+                distinct = 8
+            }
+
+            // get colorbrewer colors from a linear scale
             var colormap = data.colormap ? data.colormap : 'Purples';
 
-            var ncolor = 8;
             if (colormap == 'Lightning') {
-                color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A'];
+                color = this.getColors(distinct)
             } else {
-                color = colorbrewer[colormap][ncolor];
+                color = colorbrewer[colormap][distinct];
             }
             
             // get min and max of value data
@@ -101,7 +106,7 @@ var utils = {
             var vmax = Math.max.apply(null, values);
 
             // set up scales
-            var domain = this.linspace(vmin, vmax, ncolor);
+            var domain = this.linspace(vmin, vmax, distinct);
             var scale = d3Scale.linear().domain(domain).range(color);
 
             retColor = values.map(function(d) { return d3Color.rgb(scale(d)); });
