@@ -89,9 +89,9 @@ var utils = {
             // get d3 colors from a linear scale
             var colormap = data.colormap ? data.colormap : 'Purples';
 
-            var ncolor = 9;
+            var ncolor = 8;
             if (colormap == 'Lightning') {
-                color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A', '#E96B88'];
+                color = ['#A38EF3', '#DBB1F2', '#7ABFEA', '#5BC69F', '#AADA90', '#F0E86B', '#F9B070', '#F19A9A'];
             } else {
                 color = colorbrewer[colormap][ncolor];
             }
