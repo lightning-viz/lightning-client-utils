@@ -6,7 +6,9 @@ var d3Scale = require('d3-scale');
 
 var colorbrewer = require('colorbrewer')
 var Color = require('color');
+var closest = require('closest');
 var r;
+
 
 var utils = {
 
@@ -100,7 +102,7 @@ var utils = {
             } else {
                 color = colorbrewer[colormap][distinct];
             }
-            
+
             // get min and max of value data
             var vmin = Math.min.apply(null, values);
             var vmax = Math.max.apply(null, values);
@@ -123,7 +125,7 @@ var utils = {
         var color = Color(base);
         color.alpha(opacity);
         return color.rgbString();
-    }, 
+    },
 
     trackTransforms: function(ctx){
 
@@ -131,7 +133,7 @@ var utils = {
         var xform = svg.createSVGMatrix();
 
         ctx.getTransform = function(){ return xform; };
-        
+
         var savedTransforms = [];
         var save = ctx.save;
         ctx.save = function(){
@@ -145,7 +147,7 @@ var utils = {
         };
 
         var scale = ctx.scale;
-        ctx.scale = function(sx,sy){            
+        ctx.scale = function(sx,sy){
             var oldXForm = xform;
             xform = xform.scaleNonUniform(sx,sy);
             if(xform.d < 1) {
@@ -155,19 +157,19 @@ var utils = {
 
             return scale.call(ctx,sx,sy);
         };
-        
+
         var rotate = ctx.rotate;
         ctx.rotate = function(radians){
             xform = xform.rotate(radians*180/Math.PI);
             return rotate.call(ctx,radians);
         };
-        
+
         var translate = ctx.translate;
         ctx.translate = function(dx,dy){
             xform = xform.translate(dx,dy);
             return translate.call(ctx,dx,dy);
         };
-        
+
         var transform = ctx.transform;
         ctx.transform = function(a,b,c,d,e,f){
             var m2 = svg.createSVGMatrix();
@@ -194,7 +196,7 @@ var utils = {
     },
 
     addCanvasZoomPanListeners: function(canvas, context, redraw) {
-            
+
         var lastX= canvas.width / 2;
         var lastY = canvas.height / 2;
         var dragStart, dragged;
@@ -252,11 +254,12 @@ var utils = {
          * TODO - move this logic to the visualization base class
          *        so we aren't passing around viz objects everywhere
          */
-        var $el = viz.$el;
-        if(!viz.$el) {
-            $el = $(viz.selector);
+        var el = viz.el;
+        if(!el) {
+          console.log('heher');
+          el = $(viz.selector)[0];
         }
-        return $el.closest('[data-model=visualization]').data('model-id');
+        return closest(el, '[data-model=visualization]', true).dataset.modelId;
     },
 
     getUrl: function(viz) {
@@ -359,13 +362,16 @@ var utils = {
         }
 
         var url = this.getUrl(viz);
+
+        console.log('settings');
+        console.log(settings);
         r = request.post(url + '/settings/', settings, function(err, res) {
 
             if(err) {
                 return cb(err)
             }
 
-            cb(null, (res.body || {}).settings);
+            cb && cb(null, (res.body || {}).settings);
         });
     },
 
